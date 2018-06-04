@@ -1,0 +1,216 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <cstdlib>
+#include <sstream>
+
+using namespace std;
+void cutequation (string s1 ,string arr[]);
+int findchar(string s);
+void addsimilar (string arr[]);
+void sortarray(string arr[]);
+void savearray(string arr[] , string d_arr[100][100], int row);
+void addplus (string d_arr[100][100]);
+
+
+
+
+
+
+
+
+int main()
+{
+	string s1,arr[100], d_arr[100][100];
+	int i=0,j=0,n,u=0;
+	for(int k=0 ; k<100; k++)
+		for (int q=0 ; q<100 ; q++)
+			d_arr[k][q]=" ";
+
+ cout<<"please enter number of equations \n";
+	cin>>n;
+	for(i=1 ; i<=n ; i++)
+	{cout << "please enter equation "<<i<<"\n";
+	cin>> s1;
+	cutequation(s1,arr);
+	addsimilar(arr );
+	sortarray(arr);
+	savearray(arr,d_arr,i-1);} 
+	addplus(d_arr);
+	s1="" ;
+	string s3="=0";
+	for(i=0 ; i<100 ; i++)
+	{for(j=0 ; j<100 ;j++)
+	{
+	if(d_arr[i][j].substr(0,1) != " ")
+		s1=s1+ d_arr[i][j];
+	}
+	s1=s1+s3;
+	if(s1.substr(0,1) != " ")
+		if(s1.substr(0,1) != "=")
+		cout<<s1<<endl;
+	s1="";}
+	
+	
+	
+
+
+	
+
+
+	
+
+	system("pause");
+	return 0;
+}
+
+void addplus (string d_arr[100][100])
+{
+	for(int i =0 ; i<100 ; i++)
+		for (int j=0; j<100 ; j++)
+			if (d_arr[i][j].substr(0,1)!= " ")
+		{if (d_arr[i][j].substr(0,1)!= "+")
+		if (d_arr[i][j].substr(0,1)!="-")
+			d_arr[i][j].insert(0,"+");}}
+
+
+
+void savearray(string arr[] , string d_arr[100][100], int row)
+{  
+int count =0 , j=0;
+	
+		{for(int i=0 ; i<100; i++)
+	{if (arr[i].substr(0,1) != "0")
+	{	
+		d_arr [row][j]= arr[i];
+	j++ ;
+	 }
+	
+		}}}
+
+
+	
+
+void sortarray(string arr[])
+{int x;
+	for(int u=0; u<100;u++)
+if(arr[u].substr(0,1) == " ")
+	{ x=u-1;
+	break;}
+for(int u=0 ; u<100 ;u++)
+	if(findchar(arr[u]) == -1)
+		if(arr[u].substr(0,1) != " ")
+			{string temp_s=arr[x];
+arr[x]=arr[u];
+arr[u]=temp_s;
+}
+
+	for (int i=0 ; i<100 ; i++)
+for (int j=i+1 ; j<100 ; j++)
+{ if(findchar(arr[i])!=-1)
+    if(findchar(arr[j])!=-1)
+		if((arr[j].substr(findchar(arr[j])))<(arr[i].substr(findchar(arr[i]))))
+		{string s_temp = arr[i];
+		arr[i]=arr[j];
+		arr[j]=s_temp;
+}}}
+
+
+void addsimilar (string arr[])
+ {double x;
+string s1,s2,s3;
+ for(int i=0;i<100;i++)
+for(int j=i+1 ; j<100; j++)
+   { if(findchar(arr[i])!=-1)
+    if(findchar(arr[j])!=-1)
+{if((arr[i].substr(findchar(arr[i])))==(arr[j].substr(findchar(arr[j]))))
+{x = (atof((arr[i].substr(0,findchar(arr[i]))).c_str()))+(atof((arr[j].substr(0,findchar(arr[j]))).c_str()));
+ stringstream ss ;
+ss << x ;
+s1 = ss.str();
+arr[i].replace(0,findchar(arr[i]),s1);
+arr[j].replace(0,findchar(arr[j]),"0");
+ }
+
+	}}for(int i=0 ;i<100;i++)
+		for(int j=0;j<100;j++)
+		if(findchar(arr[i])==-1)
+	 if(arr[i].substr(0,1)!=" ")
+	 if(findchar(arr[j])==-1)
+if(arr[j].substr(0,1)!=" ")
+	if(arr[i]!=arr[j])
+{x = atof(arr[i].c_str())+atof(arr[j].c_str());
+ stringstream ss ;
+ss << x ;
+s2 = ss.str();
+
+
+arr[i].replace(0, arr[i].length() ,s2);
+arr[j].replace(0, arr[j].length() ,"0");
+ }
+
+}
+int findchar(string s)
+{int x=s.find_first_of("abcdefghijklmnopqrstvwxyzQWERTYUIOPLKJHGFDSAZXCVBNM_");
+return x;
+}
+
+void cutequation (string s1,string arr[] )
+{
+string s2,s3,s4;
+	for(int j=0;j<100;j++)
+	{arr[j]=" ";}
+	if(s1.find_first_of("1234567890") == 0)
+		s1.insert(0,"+");
+
+	s2=s1.substr(0,s1.find("="));
+	s3=s1.substr(s1.find("=")+1);
+
+	int firstposition=0,secondposition;
+	int i=0;
+
+	
+
+	while(s2.find_first_of("+-",firstposition+1) != -1)
+	{
+		secondposition=s2.find_first_of("+-",firstposition+1);
+		arr[i] = s1.substr(firstposition,secondposition-firstposition);
+	firstposition=secondposition ;
+
+			i++;
+
+		}
+	arr[i]=s2.substr(firstposition);
+	i++;
+	firstposition=0;
+	while(s3.find_first_of("+-",firstposition+1) != -1)
+	{
+		secondposition=s3.find_first_of("+-",firstposition+1);
+		s4 = s3.substr(firstposition,secondposition-firstposition);
+		if (s4[0]=='-')
+			s4.replace(0,1,"+");
+		else if (s4[0]=='+')
+			s4.replace(0,1,"-");
+		else s4.insert(0,"-");
+		arr[i]=s4;
+		firstposition=secondposition ;
+
+			i++;
+
+		}
+	s4=s3.substr(firstposition);
+	if (s4[0]=='-')
+	{	s4.replace(0,1,"+");}
+	else if (s4[0]=='+')
+		s4.replace(0,1,"-");
+	else
+	{s4.insert(0,"-");}
+		arr[i]=s4;
+		for(int u=0 ; u<100 ;u++)
+		{ if (findchar(arr[u]) ==0)
+		arr[u].insert(0,"+1");
+		else if(findchar(arr[u])==1)
+		arr[u].insert(1,"1");}
+		
+}
